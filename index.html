@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizon</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --panel: #161a22;
+    --text: #e8eaf0;
+    --muted: #9aa1b2;
+    --accent: #6aa8ff;
+    --error: #ff7a7a;
+  }
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  /* winit appends the game's canvas to the body; the game sizes its surface from the CSS size. */
+  body > canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    outline: none;
+    touch-action: none;
+  }
+  .overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+    z-index: 10;
+  }
+  .overlay[hidden] { display: none; }
+  .card {
+    max-width: 34rem;
+    padding: 24px 28px;
+    border-radius: 10px;
+    background: var(--panel);
+    box-shadow: 0 10px 40px rgb(0 0 0 / 0.5);
+  }
+  .card h1 { margin: 0 0 8px; font-size: 1.4rem; }
+  .card p { margin: 6px 0; color: var(--muted); }
+  #start { cursor: pointer; background: rgb(0 0 0 / 0.55); }
+  #start .card { text-align: center; }
+  #start button {
+    margin-top: 12px;
+    padding: 10px 28px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #08101f;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #start button:disabled { opacity: 0.5; cursor: default; }
+  /* Loading progress sits under the game's own loading screen and never takes clicks. */
+  #progress {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    width: min(28rem, calc(100vw - 32px));
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  #progress[hidden] { display: none; }
+  #progress .bar {
+    height: 6px;
+    margin-top: 6px;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 0.12);
+    overflow: hidden;
+  }
+  #progress .fill {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.15s;
+  }
+  #error { background: rgb(0 0 0 / 0.7); z-index: 20; }
+  #error h1 { color: var(--error); }
+  #error pre {
+    margin: 10px 0 0;
+    max-height: 50vh;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font: 12px/1.4 ui-monospace, monospace;
+    color: var(--text);
+  }
+</style>
+<script type="module" src="./boot.js"></script>
+</head>
+<body>
+<div id="start" class="overlay" hidden>
+  <div class="card">
+    <h1>Horizon</h1>
+    <p>Minecraft Java Edition 26.3, in Rust, running on WebGPU.</p>
+    <button type="button" disabled>Loading…</button>
+  </div>
+</div>
+<div id="progress" hidden>
+  <div class="label"></div>
+  <div class="bar"><div class="fill"></div></div>
+</div>
+<div id="error" class="overlay" hidden>
+  <div class="card">
+    <h1>Horizon stopped</h1>
+    <p class="summary"></p>
+    <pre></pre>
+  </div>
+</div>
+<noscript>Horizon needs JavaScript and WebGPU.</noscript>
+</body>
+</html>

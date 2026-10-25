@@ -1,0 +1,5 @@
+# Assembled by the deploy workflow from the .gz files
+/res.idx
+/res.pack
+
+*.log
